@@ -1,32 +1,69 @@
+import {WORLD_HALF,CAR_RADIUS,circleContact} from './world.js';
 export const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 export const length=(x,y)=>Math.hypot(x,y);
 export function createCar(){return {x:0,y:0,vx:0,vy:0,angle:-Math.PI/2,hp:100,maxHp:100,mass:1200,engine:1,armor:0,ram:1,gun:1,gunTimer:0,invincible:0};}
 export function drive(car,input,dt){
- const fx=Math.cos(car.angle),fy=Math.sin(car.angle);
+ const fx=Math.cos(car.angle),fy=Math.sin(car.angle),massRatio=car.mass/1200;
  let forward=car.vx*fx+car.vy*fy,side=-car.vx*fy+car.vy*fx;
- const power=car.engine*1200/car.mass;
- if(input.throttle>0)forward+=240*power*dt;
- if(input.throttle<0)forward-=(forward>8?410:155*power)*dt;
+ const power=car.engine/massRatio;
+ if(input.throttle>0)forward+=145*power*dt;
+ if(input.throttle<0)forward-=(forward>4?260/Math.sqrt(massRatio):105*power)*dt;
  const speed=length(car.vx,car.vy);
- car.angle+=input.steer*2.25*clamp(Math.abs(forward)/65,0,1)*(forward<0?-1:1)*(input.brake?1.3:1)*dt/(1+speed/650);
- side*=Math.exp(-(input.brake?1.4:7)*dt);
- forward*=Math.exp(-(input.brake?1.5:.35)*dt);
- forward=clamp(forward,-115,370*power**.3);
+ // Responsive at walking speed, less steering authority and lateral grip at speed.
+ car.angle+=input.steer*2.35*clamp(Math.abs(forward)/28,0,1)*(forward<0?-1:1)*(input.brake?1.28:1)*dt/(1+speed/235)/Math.sqrt(massRatio);
+ side*=Math.exp(-(input.brake?1.1:Math.max(2.6,8-speed/65))/Math.sqrt(massRatio)*dt);
+ forward*=Math.exp(-(input.brake?1.8/Math.sqrt(massRatio):.26)*dt);
+ forward=clamp(forward,-85,240*power**.42);
  car.vx=Math.cos(car.angle)*forward-Math.sin(car.angle)*side;
  car.vy=Math.sin(car.angle)*forward+Math.cos(car.angle)*side;
- car.x=clamp(car.x+car.vx*dt,-1450,1450);car.y=clamp(car.y+car.vy*dt,-1450,1450);
- if(Math.abs(car.x)>=1450)car.vx*=-.4;if(Math.abs(car.y)>=1450)car.vy*=-.4;
+ car.x=clamp(car.x+car.vx*dt,-WORLD_HALF,WORLD_HALF);car.y=clamp(car.y+car.vy*dt,-WORLD_HALF,WORLD_HALF);
+ // Remote world edge stops the outward component, never bounces repeatedly.
+ if(Math.abs(car.x)>=WORLD_HALF&&car.vx*Math.sign(car.x)>0)car.vx=0;
+ if(Math.abs(car.y)>=WORLD_HALF&&car.vy*Math.sign(car.y)>0)car.vy=0;
  car.invincible=Math.max(0,car.invincible-dt);
 }
+function hurt(car,damage){
+ if(car.invincible>0||damage<=0)return 0;
+ const dealt=Math.max(0,damage-car.armor);car.hp=Math.max(0,car.hp-dealt);if(dealt>0)car.invincible=.45;return dealt;
+}
+export function collideObstacle(car,o,radius=CAR_RADIUS){
+ if(o.broken)return null;
+ const hit=circleContact(car.x,car.y,radius,o);if(!hit)return null;
+ const {nx,ny,depth}=hit;
+ const normalSpeed=Math.max(0,-car.vx*nx-car.vy*ny),speed=length(car.vx,car.vy);
+ const facing=Math.max(0,-Math.cos(car.angle)*nx-Math.sin(car.angle)*ny);
+ const impact=normalSpeed*Math.sqrt(car.mass/1200)*(1+(car.ram-1)*1.6*facing);
+ const threshold=o.type==='light'?48:165;
+ const broken=o.type!=='fixed'&&impact>=threshold;
+ let damage=0;
+ if(broken){
+  o.broken=true;const retain=o.type==='light'?.95:.76;car.vx*=retain;car.vy*=retain;
+  // Soft objects are safe to plough through; heavy wrecks retain a small impact cost.
+  if(o.type==='medium')damage=hurt(car,Math.max(0,(normalSpeed-155)*.025));
+ }else{
+  car.x+=nx*(depth+.02);car.y+=ny*(depth+.02);
+  // Remove incoming normal velocity, preserve tangential slide. No pinball impulse.
+  if(normalSpeed>0){car.vx+=nx*normalSpeed;car.vy+=ny*normalSpeed;}
+  const safe=o.type==='fixed'?90:o.type==='medium'?105:140;
+  const severity=o.type==='fixed'?.0012:.00045;
+  damage=hurt(car,Math.max(0,normalSpeed-safe)**2*severity*(.65+.35*facing));
+ }
+ return {broken,normalSpeed,speed,damage,type:o.type,x:o.x,y:o.y};
+}
 export function ramEnemy(car,enemy){
- const dx=enemy.x-car.x,dy=enemy.y-car.y,d=length(dx,dy)||1;
- const speed=length(car.vx,car.vy);
- const impact=clamp(speed/80,.15,5)*car.ram*(car.mass/1200);
- enemy.hp-=impact*23;enemy.x+=dx/d*25;enemy.y+=dy/d*25;
- car.vx*=.84;car.vy*=.84;
- const damage=speed>95?2:9;
- if(car.invincible<=0){car.hp=Math.max(0,car.hp+0-Math.max(1,damage-car.armor));car.invincible=.45;}
- return {damage:impact*23,speed};
+ const dx=enemy.x-car.x,dy=enemy.y-car.y,d=length(dx,dy)||1,nx=dx/d,ny=dy/d;
+ const speed=length(car.vx,car.vy),closing=Math.max(0,car.vx*nx+car.vy*ny);
+ const facing=Math.max(0,Math.cos(car.angle)*nx+Math.sin(car.angle)*ny);
+ const damage=Math.max(3,closing*.72)*car.ram*Math.sqrt(car.mass/1200)*(.8+.4*facing);
+ enemy.hp-=damage;
+ const knockback=24+closing*.27;enemy.x+=nx*knockback;enemy.y+=ny*knockback;
+ enemy.stun=.28;
+ // Speed and a heavy bumper carry the car through a group; stationary contact remains dangerous.
+ const retain=closing>45?clamp(.975+(car.ram-1)*.018+(car.mass-1200)/60000,.975,.997):.96;
+ car.vx*=retain;car.vy*=retain;
+ const selfDamage=closing>55?0:6;
+ const dealt=hurt(car,selfDamage);
+ return {damage,speed,closing,selfDamage:dealt};
 }
 export const upgrades=[
  {id:'ram',name:'강화 충각',slot:'FRONT / 범퍼',description:'충돌 피해 +45%. 전면에 강철 쐐기를 장착합니다.',apply:c=>{c.ram+=.45;c.mass+=100;}},

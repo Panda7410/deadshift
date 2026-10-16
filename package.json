@@ -1,5 +1,17 @@
 {
-  "name": "deadshift", "version": "0.1.0", "private": true, "type": "module",
-  "scripts": {"dev": "node scripts/serve.mjs", "start": "node scripts/serve.mjs", "build": "node scripts/build.mjs", "test": "node --test tests/*.test.mjs", "test:browser": "node tests/browser.mjs", "check": "node --check src/game.js && node --check src/core.js"},
-  "devDependencies": {"playwright-core": "1.61.1"}
+  "name": "deadshift",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "start": "node scripts/serve.mjs",
+    "build": "node scripts/build.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "test:browser": "node tests/browser.mjs && node tests/driving-browser.mjs",
+    "check": "node --check src/game.js && node --check src/core.js && node --check src/world.js"
+  },
+  "devDependencies": {
+    "playwright-core": "1.61.1"
+  }
 }
