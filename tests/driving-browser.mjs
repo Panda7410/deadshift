@@ -11,7 +11,7 @@ try{
  const snapshot=()=>page.evaluate(()=>__deadshift.snapshot());
  // Real input and normal enemy spawning for 22 seconds. No positions, HP or kills altered.
  await page.keyboard.down('w');const started=Date.now();let levels=0;
- while(Date.now()-started<22000){await page.waitForTimeout(200);const s=await snapshot();if(s.state==='levelup'){await page.locator('.card').first().click();levels++;await page.keyboard.up('w');await page.keyboard.down('w');}else assert.equal(s.state,'playing','natural road driving remains playable');}
+ while(Date.now()-started<22000){await page.waitForTimeout(200);const s=await snapshot();if(s.state==='levelup'){await page.locator('.card').first().click();if((await snapshot()).state==='equipment')await page.keyboard.press('Escape');levels++;await page.keyboard.up('w');await page.keyboard.down('w');}else assert.equal(s.state,'playing','natural road driving remains playable');}
  await page.keyboard.up('w');const road=await snapshot();
  assert.ok(Math.abs(road.car.y)>2700,'drives far beyond old boundary');assert.equal(road.metrics.obstacleDamage,0,'road is not an obstacle course');assert.ok(road.kills>0,'normal combat happens while driving');assert.ok(Math.abs(road.car.y-road.camera.y)>5&&Math.abs(road.car.y-road.camera.y)<180,'camera follows with smooth lookahead');
  console.log('Natural 22s road:',JSON.stringify({distance:Math.abs(road.car.y),hp:road.car.hp,kills:road.kills,levels,metrics:road.metrics,cameraLag:road.car.y-road.camera.y}));

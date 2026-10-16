@@ -57,3 +57,23 @@ export function followCamera(camera,car,dt){
  camera.x+=(tx-camera.x)*t;camera.y+=(ty-camera.y)*t;
 }
 export function atExit(car){return Math.hypot(car.x-EXIT.x,car.y-EXIT.y)<EXIT.r;}
+
+export const PHYSICAL_TYPES=new Set(['fixed','light','medium']);
+export function resolveOverlaps(car,obstacles,radius=CAR_RADIUS){
+ const solids=obstacles.filter(o=>!o.broken&&PHYSICAL_TYPES.has(o.type));
+ const contacts=()=>solids.map(o=>circleContact(car.x,car.y,radius,o)).filter(Boolean);
+ let moved=false;
+ for(let pass=0;pass<8;pass++){
+  let count=0;for(const o of solids){const h=circleContact(car.x,car.y,radius,o);if(!h)continue;count++;moved=true;car.x+=h.nx*(h.depth+.02);car.y+=h.ny*(h.depth+.02);const incoming=car.vx*h.nx+car.vy*h.ny;if(incoming<0){car.vx-=incoming*h.nx;car.vy-=incoming*h.ny;}}
+  if(!count)return {moved,recovered:false};
+ }
+ if(!contacts().length)return {moved,recovered:false};
+ // Only unresolved physical overlaps trigger recovery, never hazard/VFX areas.
+ const x=car.x,y=car.y;
+ for(let r=8;r<=240;r+=8)for(let i=0;i<48;i++){
+  const a=i*Math.PI/24,px=x+Math.cos(a)*r,py=y+Math.sin(a)*r;
+  if(Math.abs(px)>WORLD_HALF||Math.abs(py)>WORLD_HALF)continue;
+  if(solids.every(o=>!circleContact(px,py,radius+1,o))){car.x=px;car.y=py;car.vx=0;car.vy=0;return {moved:true,recovered:true};}
+ }
+ return {moved,recovered:false,unresolved:true};
+}
