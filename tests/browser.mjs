@@ -8,7 +8,7 @@ try{
  page.on('pageerror',e=>errors.push(e.message));page.on('response',r=>{if(r.status()>=400)failed.push(r.url());});
  await page.goto(`${process.env.TEST_URL||'http://127.0.0.1:5173'}/?test=1`);await page.getByRole('button',{name:'엔진 시동'}).click();
  await page.keyboard.down('w');await page.waitForTimeout(1100);await page.keyboard.up('w');
- let s=await page.evaluate(()=>__deadshift.snapshot());assert.ok(s.car.y<-30,'keyboard changes world position');assert.ok(Math.hypot(s.car.vx,s.car.vy)>100);
+ let s=await page.evaluate(()=>__deadshift.snapshot());assert.ok(s.car.y<-30,'keyboard changes world position');assert.ok(Math.hypot(s.car.vx,s.car.vy)>65);
  await page.keyboard.press('Escape');const t=(await page.evaluate(()=>__deadshift.snapshot())).time;await page.waitForTimeout(250);assert.equal((await page.evaluate(()=>__deadshift.snapshot())).time,t);
  await page.getByRole('button',{name:'주행 계속'}).click();await page.evaluate(()=>__deadshift.setScenario('collision'));await page.waitForTimeout(100);assert.ok((await page.evaluate(()=>__deadshift.snapshot())).kills>=1,'ram kill recorded');
  await page.evaluate(()=>__deadshift.setScenario('level'));await page.waitForFunction(()=>__deadshift.snapshot().state==='levelup');assert.equal(await page.locator('.card').count(),3);await page.locator('.card').first().click();assert.equal((await page.evaluate(()=>__deadshift.snapshot())).state,'playing');

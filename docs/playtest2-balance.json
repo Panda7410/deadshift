@@ -1,0 +1,478 @@
+{
+  "seeds": [
+    7410,
+    7411,
+    7412
+  ],
+  "duration": 210,
+  "method": "Actual fixed-step game update; straight W autopilot; predefined upgrade path on each level; baseline skips rewards. Not human survival balance. Same seeds, not identical encounters: movement and kills change procedural RNG consumption.",
+  "summary": [
+    {
+      "build": "none",
+      "survival": 89.16944444446148,
+      "kills": 98.66666666666667,
+      "killsPerMinute": 67.65157619981356,
+      "speedKmh": 57.73929922059787,
+      "lossPerRam": 10.332640188432237,
+      "enemyDamage": 122.05333333333334,
+      "hazardDamage": 8,
+      "obstacleDamage": 0
+    },
+    {
+      "build": "ram",
+      "survival": 93.01388888890898,
+      "kills": 110,
+      "killsPerMinute": 70.71101486939928,
+      "speedKmh": 63.58670409284908,
+      "lossPerRam": 12.22466557772565,
+      "enemyDamage": 144.79999999999998,
+      "hazardDamage": 5.333333333333333,
+      "obstacleDamage": 0
+    },
+    {
+      "build": "weapon",
+      "survival": 119.7555555555822,
+      "kills": 230.66666666666666,
+      "killsPerMinute": 113.81388683546571,
+      "speedKmh": 57.332391233860655,
+      "lossPerRam": 14.010188347625755,
+      "enemyDamage": 111.16666666666664,
+      "hazardDamage": 82.33333333333327,
+      "obstacleDamage": 0
+    },
+    {
+      "build": "hybrid",
+      "survival": 106.55277777780863,
+      "kills": 144,
+      "killsPerMinute": 81.2564246220589,
+      "speedKmh": 59.32867170302949,
+      "lossPerRam": 9.783073235625551,
+      "enemyDamage": 114.45666666666666,
+      "hazardDamage": 32,
+      "obstacleDamage": 0
+    }
+  ],
+  "results": [
+    {
+      "seed": 7410,
+      "build": "none",
+      "time": 100.30000000002589,
+      "level": 6,
+      "kills": 103,
+      "hp": 0,
+      "meanSpeed": 159.3909802918843,
+      "metrics": {
+        "ramKills": 61,
+        "gunKills": 42,
+        "obstacleDamage": 0,
+        "enemyDamage": 103.56,
+        "hazardDamage": 12,
+        "brokenLight": 0,
+        "brokenMedium": 0,
+        "ramSpeedLoss": 1075.079453949067,
+        "ramHits": 104,
+        "ramDamage": 1790.9714479982658,
+        "weaponDamage": {
+          "roof": 2078.3364007619257
+        },
+        "killsByType": {
+          "normal": 51,
+          "fast": 52
+        },
+        "speedTotal": 1918429.8387931194,
+        "samples": 12036,
+        "pickups": 4
+      },
+      "upgrades": 0,
+      "alive": false
+    },
+    {
+      "seed": 7410,
+      "build": "ram",
+      "time": 85.11666666668047,
+      "level": 6,
+      "kills": 96,
+      "hp": 0,
+      "meanSpeed": 169.6403624740832,
+      "metrics": {
+        "ramKills": 67,
+        "gunKills": 29,
+        "obstacleDamage": 0,
+        "enemyDamage": 163.59999999999997,
+        "hazardDamage": 0,
+        "brokenLight": 0,
+        "brokenMedium": 0,
+        "ramSpeedLoss": 1608.167141636382,
+        "ramHits": 115,
+        "ramDamage": 2743.8033049603782,
+        "weaponDamage": {
+          "roof": 1780.080040352488
+        },
+        "killsByType": {
+          "normal": 50,
+          "fast": 42,
+          "heavy": 4
+        },
+        "speedTotal": 1732706.6623102857,
+        "samples": 10214,
+        "pickups": 4
+      },
+      "upgrades": 5,
+      "alive": false
+    },
+    {
+      "seed": 7410,
+      "build": "weapon",
+      "time": 114.83333333337079,
+      "level": 8,
+      "kills": 205,
+      "hp": 0,
+      "meanSpeed": 164.8134398854865,
+      "metrics": {
+        "ramKills": 30,
+        "gunKills": 175,
+        "obstacleDamage": 0,
+        "enemyDamage": 92.39999999999999,
+        "hazardDamage": 80,
+        "brokenLight": 0,
+        "brokenMedium": 0,
+        "ramSpeedLoss": 873.6212072735408,
+        "ramHits": 54,
+        "ramDamage": 1136.8300275212748,
+        "weaponDamage": {
+          "roof": 4071.0257759108035,
+          "right": 1292.4397952605905,
+          "left": 1418.944761090684,
+          "front": 1660.7596402166469
+        },
+        "killsByType": {
+          "normal": 89,
+          "fast": 89,
+          "heavy": 24,
+          "spitter": 3
+        },
+        "speedTotal": 2271129.201622004,
+        "samples": 13780,
+        "pickups": 2
+      },
+      "upgrades": 7,
+      "alive": false
+    },
+    {
+      "seed": 7410,
+      "build": "hybrid",
+      "time": 123.55000000004439,
+      "level": 7,
+      "kills": 159,
+      "hp": 0,
+      "meanSpeed": 172.02869655271314,
+      "metrics": {
+        "ramKills": 85,
+        "gunKills": 74,
+        "obstacleDamage": 0,
+        "enemyDamage": 88.60000000000001,
+        "hazardDamage": 72,
+        "brokenLight": 0,
+        "brokenMedium": 0,
+        "ramSpeedLoss": 802.0291290796947,
+        "ramHits": 99,
+        "ramDamage": 2165.2675836250105,
+        "weaponDamage": {
+          "roof": 4171.702012097799,
+          "right": 405.7,
+          "left": 356.52
+        },
+        "killsByType": {
+          "normal": 76,
+          "fast": 79,
+          "spitter": 2,
+          "heavy": 2
+        },
+        "speedTotal": 2550497.455090525,
+        "samples": 14826,
+        "pickups": 2
+      },
+      "upgrades": 6,
+      "alive": false
+    },
+    {
+      "seed": 7411,
+      "build": "none",
+      "time": 101.28333333336,
+      "level": 6,
+      "kills": 108,
+      "hp": 0,
+      "meanSpeed": 163.54370524630713,
+      "metrics": {
+        "ramKills": 64,
+        "gunKills": 44,
+        "obstacleDamage": 0,
+        "enemyDamage": 132.20000000000002,
+        "hazardDamage": 12,
+        "brokenLight": 0,
+        "brokenMedium": 0,
+        "ramSpeedLoss": 1002.4933356418221,
+        "ramHits": 89,
+        "ramDamage": 1835.8485397355446,
+        "weaponDamage": {
+          "roof": 2050.9981693454974
+        },
+        "killsByType": {
+          "normal": 54,
+          "fast": 54
+        },
+        "speedTotal": 1987710.1935636168,
+        "samples": 12154,
+        "pickups": 4
+      },
+      "upgrades": 0,
+      "alive": false
+    },
+    {
+      "seed": 7411,
+      "build": "ram",
+      "time": 93.68333333335396,
+      "level": 6,
+      "kills": 105,
+      "hp": 0,
+      "meanSpeed": 180.3258420247668,
+      "metrics": {
+        "ramKills": 71,
+        "gunKills": 34,
+        "obstacleDamage": 0,
+        "enemyDamage": 126.00000000000001,
+        "hazardDamage": 4,
+        "brokenLight": 0,
+        "brokenMedium": 0,
+        "ramSpeedLoss": 1119.1825735602056,
+        "ramHits": 106,
+        "ramDamage": 2233.2871548225016,
+        "weaponDamage": {
+          "roof": 1817.6839085310226
+        },
+        "killsByType": {
+          "normal": 48,
+          "fast": 56,
+          "heavy": 1
+        },
+        "speedTotal": 2027223.1160424284,
+        "samples": 11242,
+        "pickups": 3
+      },
+      "upgrades": 5,
+      "alive": false
+    },
+    {
+      "seed": 7411,
+      "build": "weapon",
+      "time": 153.86666666669106,
+      "level": 12,
+      "kills": 324,
+      "hp": 0,
+      "meanSpeed": 141.571733411723,
+      "metrics": {
+        "ramKills": 64,
+        "gunKills": 260,
+        "obstacleDamage": 0,
+        "enemyDamage": 92.69999999999997,
+        "hazardDamage": 166.99999999999983,
+        "brokenLight": 0,
+        "brokenMedium": 0,
+        "ramSpeedLoss": 1644.4712210375098,
+        "ramHits": 218,
+        "ramDamage": 2442.7699959393294,
+        "weaponDamage": {
+          "roof": 6203.503067467108,
+          "right": 2524.1463050722414,
+          "left": 2509.183369772705,
+          "front": 3685.9297313801358
+        },
+        "killsByType": {
+          "normal": 145,
+          "fast": 132,
+          "heavy": 44,
+          "spitter": 3
+        },
+        "speedTotal": 2613980.4857140533,
+        "samples": 18464,
+        "pickups": 14
+      },
+      "upgrades": 11,
+      "alive": false
+    },
+    {
+      "seed": 7411,
+      "build": "hybrid",
+      "time": 95.07500000002173,
+      "level": 6,
+      "kills": 119,
+      "hp": 0,
+      "meanSpeed": 160.97240089529987,
+      "metrics": {
+        "ramKills": 61,
+        "gunKills": 58,
+        "obstacleDamage": 0,
+        "enemyDamage": 122.36999999999999,
+        "hazardDamage": 8,
+        "brokenLight": 0,
+        "brokenMedium": 0,
+        "ramSpeedLoss": 1225.4363782205444,
+        "ramHits": 112,
+        "ramDamage": 1969.82133156611,
+        "weaponDamage": {
+          "roof": 2954.4425266615335
+        },
+        "killsByType": {
+          "normal": 61,
+          "fast": 54,
+          "heavy": 4
+        },
+        "speedTotal": 1836534.1218144763,
+        "samples": 11409,
+        "pickups": 3
+      },
+      "upgrades": 5,
+      "alive": false
+    },
+    {
+      "seed": 7412,
+      "build": "none",
+      "time": 65.92499999999853,
+      "level": 5,
+      "kills": 85,
+      "hp": 0,
+      "meanSpeed": 158.2261413001242,
+      "metrics": {
+        "ramKills": 55,
+        "gunKills": 30,
+        "obstacleDamage": 0,
+        "enemyDamage": 130.4,
+        "hazardDamage": 0,
+        "brokenLight": 0,
+        "brokenMedium": 0,
+        "ramSpeedLoss": 779.9217889872626,
+        "ramHits": 83,
+        "ramDamage": 1565.7167856809037,
+        "weaponDamage": {
+          "roof": 1315.2120197017432
+        },
+        "killsByType": {
+          "normal": 49,
+          "fast": 36
+        },
+        "speedTotal": 1251727.0038252824,
+        "samples": 7911,
+        "pickups": 2
+      },
+      "upgrades": 0,
+      "alive": false
+    },
+    {
+      "seed": 7412,
+      "build": "ram",
+      "time": 100.24166666669251,
+      "level": 7,
+      "kills": 129,
+      "hp": 0,
+      "meanSpeed": 179.92299627489237,
+      "metrics": {
+        "ramKills": 92,
+        "gunKills": 37,
+        "obstacleDamage": 0,
+        "enemyDamage": 144.79999999999995,
+        "hazardDamage": 12,
+        "brokenLight": 0,
+        "brokenMedium": 0,
+        "ramSpeedLoss": 1686.2935768196892,
+        "ramHits": 139,
+        "ramDamage": 3374.955696110504,
+        "weaponDamage": {
+          "roof": 2038.1122839978343
+        },
+        "killsByType": {
+          "normal": 63,
+          "fast": 63,
+          "heavy": 3
+        },
+        "speedTotal": 2164293.7221906804,
+        "samples": 12029,
+        "pickups": 3
+      },
+      "upgrades": 6,
+      "alive": false
+    },
+    {
+      "seed": 7412,
+      "build": "weapon",
+      "time": 90.56666666668481,
+      "level": 8,
+      "kills": 163,
+      "hp": 0,
+      "meanSpeed": 171.3847536516293,
+      "metrics": {
+        "ramKills": 26,
+        "gunKills": 137,
+        "obstacleDamage": 0,
+        "enemyDamage": 148.39999999999998,
+        "hazardDamage": 0,
+        "brokenLight": 0,
+        "brokenMedium": 0,
+        "ramSpeedLoss": 1080.2279656152336,
+        "ramHits": 59,
+        "ramDamage": 1086.3060905363584,
+        "weaponDamage": {
+          "roof": 3231.2105669850457,
+          "left": 1147.621365007705,
+          "right": 1169,
+          "front": 1762.4000650768041
+        },
+        "killsByType": {
+          "normal": 90,
+          "fast": 57,
+          "heavy": 16
+        },
+        "speedTotal": 1862609.502685907,
+        "samples": 10868,
+        "pickups": 3
+      },
+      "upgrades": 7,
+      "alive": false
+    },
+    {
+      "seed": 7412,
+      "build": "hybrid",
+      "time": 101.0333333333598,
+      "level": 7,
+      "kills": 154,
+      "hp": 0,
+      "meanSpeed": 161.4045000772327,
+      "metrics": {
+        "ramKills": 90,
+        "gunKills": 64,
+        "obstacleDamage": 0,
+        "enemyDamage": 132.39999999999998,
+        "hazardDamage": 16,
+        "brokenLight": 0,
+        "brokenMedium": 0,
+        "ramSpeedLoss": 1339.8474880214217,
+        "ramHits": 130,
+        "ramDamage": 2347.958752724792,
+        "weaponDamage": {
+          "roof": 3608.7297783071517,
+          "right": 270.10251912882444,
+          "left": 251.8101135106857
+        },
+        "killsByType": {
+          "normal": 76,
+          "fast": 72,
+          "heavy": 6
+        },
+        "speedTotal": 1956868.1589363695,
+        "samples": 12124,
+        "pickups": 6
+      },
+      "upgrades": 6,
+      "alive": false
+    }
+  ]
+}

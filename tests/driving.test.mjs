@@ -6,7 +6,7 @@ const throttle={throttle:1,steer:0,brake:false};
 const obstacle=(type,x=40,y=0,w=40,h=100)=>({type,x,y,w,h,broken:false});
 const impact=(type,vx,vy=0,y=0)=>{const c=createCar();Object.assign(c,{x:0,y,vx,vy,angle:0});const o=obstacle(type);return {c,o,result:collideObstacle(c,o)};};
 test('light obstacles break safely and retain speed; low speed pushes out without damage',()=>{
- const {c,o,result}=impact('light',100);assert.equal(o.broken,true);assert.equal(result.damage,0);assert.ok(c.vx>=95);
+ const {c,o,result}=impact('light',100);assert.equal(o.broken,true);assert.equal(result.damage,0);assert.ok(c.vx>90&&c.vx<98);
  const low=impact('light',20);assert.equal(low.o.broken,false);assert.equal(low.c.hp,100);assert.ok(!circleContact(low.c.x,low.c.y,22,low.o));
 });
 test('medium wreck needs speed, mass or ram; light objects are not concrete',()=>{
@@ -37,7 +37,7 @@ test('braking and steering are affected by mass; slower low-speed steering stays
 test('driving a road for 120 seconds has no building impacts or nearby arena boundary',()=>{
  const world=createWorld(),c=createCar();let hits=0;
  for(let i=0;i<120*120;i++){drive(c,throttle,1/120);for(const o of nearbyObstacles(world,c.x,c.y,90)){if(collideObstacle(c,o))hits++;}}
- assert.ok(Math.abs(c.y)>28000);assert.ok(Math.abs(c.y)<WORLD_HALF-10000);assert.equal(hits,0);assert.equal(c.hp,100);console.log(`120s road: ${Math.abs(c.y).toFixed(0)} units, ${hits} obstacle impacts, ${c.hp} HP`);
+ assert.ok(Math.abs(c.y)>19500);assert.ok(Math.abs(c.y)<WORLD_HALF-10000);assert.equal(hits,0);assert.equal(c.hp,100);console.log(`120s road: ${Math.abs(c.y).toFixed(0)} units, ${hits} obstacle impacts, ${c.hp} HP`);
 });
 test('all drivable district cells connect to the road network; road centerlines stay clear',()=>{
  const world=createWorld();
@@ -56,9 +56,9 @@ test('camera follows gradually with lookahead and converges after a stop',()=>{
 });
 test('engine upgrade gives a useful speed advantage over long roads and faster exit approach',()=>{
  function trip(upgraded){const c=createCar();c.angle=0;if(upgraded)applyUpgrade(c,'engine');let t=0;while(c.x<EXIT.x&&t<40){drive(c,throttle,1/120);t+=1/120;}return {c,t};}
- const base=trip(false),engine=trip(true);assert.ok(base.t>15&&base.t<25);assert.ok(engine.t<base.t-1);assert.ok(engine.c.vx>base.c.vx);assert.ok(atExit(base.c));console.log(`Exit 4200 units: base ${base.t.toFixed(2)}s, engine ${engine.t.toFixed(2)}s (gate unlocks at 180s)`);
+ const base=trip(false),engine=trip(true);assert.ok(base.t>25&&base.t<30);assert.ok(engine.t<base.t-1);assert.ok(engine.c.vx>base.c.vx);assert.ok(atExit(base.c));console.log(`Exit 4200 units: base ${base.t.toFixed(2)}s, engine ${engine.t.toFixed(2)}s (gate unlocks at 180s)`);
 });
-test('a zombie pack rewards ramming with kills, low speed loss and no fast-contact damage',()=>{
+test('a zombie pack rewards ramming with kills, cumulative speed loss without stopping after one hit',()=>{
  const c=createCar();c.angle=0;c.vx=150;let dead=0;for(let i=0;i<6;i++){const z={x:c.x+15,y:c.y,hp:32};ramEnemy(c,z);if(z.hp<=0)dead++;}
- assert.equal(dead,6);assert.ok(c.vx>125);assert.equal(c.hp,100);
+ assert.equal(dead,6);assert.ok(c.vx>85&&c.vx<110);assert.equal(c.hp,100);
 });

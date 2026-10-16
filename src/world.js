@@ -6,20 +6,28 @@ export const EXIT={x:4200,y:0,r:125};
 export const CAR_RADIUS=22;
 const seed=(x,y)=>Math.abs(((x*73856093)^(y*19349663))>>>0);
 export function createWorld(){return {cells:new Map()};}
+export function districtAt(x,y){const n=seed(Math.floor(x/BLOCK),Math.floor(y/BLOCK))%3;return ['검문소 / 바리케이드','물류 구역 / 창고','사고 구간 / 폐차'][n];}
 export function cellObstacles(cx,cy){
  const x=cx*BLOCK,y=cy*BLOCK,n=seed(cx,cy),plaza=n%3===0;
  const list=[];
- const add=(id,type,ox,oy,w,h)=>list.push({id:`${cx}:${cy}:${id}`,type,x:x+ox,y:y+oy,w,h,broken:false});
+ const add=(id,type,ox,oy,w,h)=>list.push({id:`${cx}:${cy}:${id}`,type,x:x+ox,y:y+oy,w,h,mass:type==='light'?w*h*.065:type==='medium'?w*h*.065:Infinity,broken:false});
  // Buildings enclose districts, while 440-unit roads and central courtyards stay open.
  for(const [i,bx,by] of [[0,500,500],[1,1100,500],[2,500,1100],[3,1100,1100]]){
   if(plaza&&(i===1||i===2))continue;
   add(`building${i}`,'fixed',bx,by,330,310);
  }
- // Leave both road centerlines clear. Small props sit on alternate outer lanes.
- add('crate','light',110,650+(n%3)*120,32,32);
- add('barrel','light',850,125,30,30);
- if(n%2===0)add('wreck','medium',120,1180,50,95);
- if(n%4===1)add('barrier','medium',1260,135,90,38);
+ // Themed, bypassable clusters. A wide center lane remains clear in every district.
+ if(n%3===0){
+  for(let i=0;i<3;i++)add(`checkpoint${i}`,'medium',135,650+i*110,90,36);
+  for(let i=0;i<2;i++)add(`supply${i}`,'light',125+i*50,1010,32,32);
+ }else if(n%3===1){
+  for(let row=0;row<2;row++)for(let col=0;col<3;col++)add(`cargo${row}${col}`,'light',740+col*52,760+row*52,42,42);
+  add('container','medium',800,950,120,50);
+  add('roadcargo','light',120,750,38,38);
+ }else{
+  add('wreck0','medium',125,650,50,95);add('wreck1','medium',145,860,50,95);
+  for(let i=0;i<3;i++)add(`scrap${i}`,'light',100+i*40,1040+i*45,30,30);
+ }
  return list;
 }
 export function nearbyObstacles(world,x,y,radius=1000){
